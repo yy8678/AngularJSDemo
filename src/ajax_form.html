@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="AjaxFormApp">
+  <head>
+    <title>JavaScript Garden</title>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular.min.js"></script>
+  </head>
+  <body>
+    <script>
+      var ajaxFormApp = angular.module('AjaxFormApp', []);
+      var AjaxFormCtrl = ajaxFormApp.controller('AjaxFormCtrl', [ '$http', '$httpParamSerializerJQLike', function($http, $httpParamSerializerJQLike) {
+
+        var self = this;
+        self.user = {};
+
+        self.submit = function() {
+          $http({
+            url: 'http://localhost:8080',
+            method: 'POST',
+            data: $httpParamSerializerJQLike(self.user),
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          });
+        }
+
+      }]);
+    </script>
+    <form ng-controller="AjaxFormCtrl as ajaxForm" onsubmit="return false">
+      <div><input type="text" name="name" ng-model="ajaxForm.user.name" /></div>
+      <div><input type="text" name="description" ng-model="ajaxForm.user.description" /></div>
+      <div>
+        <input type="submit" value="Submit" ng-click="ajaxForm.submit()" />
+      </div>
+    </form>
+  </body>
+</html>
